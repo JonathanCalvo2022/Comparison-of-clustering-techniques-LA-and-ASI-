@@ -7,6 +7,10 @@
 #===============================================================================
 #install.packages("openxlsx")
 library(openxlsx)
+library("ggplot2")
+library("factoextra")
+library("cluster")
+library("microbenchmark")
 #===============================================================================
 # 4.1) Ejecutar los metodos LA con las 383 bases de datos aleatorias
 #===============================================================================
