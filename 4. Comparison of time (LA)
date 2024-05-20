@@ -1,0 +1,47 @@
+#===============================================================================
+#Nombre: Jonathan Calvopiña
+#Fecha: 17/05/2024
+#Objetivo: Comparación del tiempo de los métodos clúster de LA.
+#===============================================================================
+# 4) Ejecutar los metodos de LA y medir el tiempo en segundos
+#===============================================================================
+#install.packages("openxlsx")
+library(openxlsx)
+#===============================================================================
+# 4.1) Ejecutar los metodos LA con las 383 bases de datos aleatorias
+#===============================================================================
+# Ejecucion y medicion del tiempos de procesamiento (en segundos)
+tiempo1 <- numeric(fin_data - inicio_data + 1)
+tiempo2 <- numeric(fin_data - inicio_data + 1)
+
+for (i in inicio_data:fin_data) {
+  file_path <- paste0(directorio, "File_", sprintf("%03d", i), ".csv")
+  DataBase <- read.csv(file_path, sep = ";", header = TRUE, row.names = 1)
+  DataBase_modificada <- aplicar_formula(DataBase)
+  
+  # Método 1
+  micro_1 <- microbenchmark(metodo_1(DataBase_modificada), times = 1L)
+  tiempo1[i - inicio_data + 1] <- micro_1$time / 1e9  # tiempo en segundos
+  
+  # Método 2
+  micro_2 <- microbenchmark(metodo_2(DataBase_modificada), times = 1L)
+  tiempo2[i - inicio_data + 1] <- micro_2$time / 1e9  # tiempo en segundos
+}
+#===============================================================================
+# 4.2) Mostrar los resultados de tiempos de los metodos de LA
+#===============================================================================
+# Imprimir tiempos de ejecución
+#print("Tiempos de hclust (segundos):")
+#print(tiempo1)
+
+#print("Tiempo de DIANA (segundos):")
+#print(tiempo2)
+#===============================================================================
+# 4.3) Guardar el tiempo en segundos de los distintos metodos en Excel
+#===============================================================================
+# Crear un dataframe con los tiempos de ejecución de ambos métodos
+resultados <- data.frame(Met_hclust = tiempo1, Met_diana = tiempo2)
+
+# Escribir los resultados en un archivo de Excel
+write.xlsx(resultados, file = "resultados_tiempo.xlsx")
+#===============================================================================
