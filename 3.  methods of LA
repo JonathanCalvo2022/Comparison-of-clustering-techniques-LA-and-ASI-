@@ -1,10 +1,13 @@
 #===============================================================================
 #Nombre: Jonathan Calvopiña
 #Fecha: 17/05/2024
-#Objetivo: Metodos de las tecnica clusters de LA.
+#Objetivo: Métodos clúster jerárquicos de LA.
 #===============================================================================
+library("ggplot2")
+library("factoextra")
+library("cluster")
 #===============================================================================
-# 3) Metodos de las tecnica clusters de LA.
+# 3) Métodos clúster de LA.
 #===============================================================================
 # Método 1 (hclust)
 metodo_1 <- function(DataBase_modificada){
