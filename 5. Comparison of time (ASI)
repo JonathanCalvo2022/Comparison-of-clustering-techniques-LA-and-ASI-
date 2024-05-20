@@ -1,0 +1,78 @@
+library("Rcpp");
+library("rchic")
+library("tcltk2");
+library("stringr");
+library("ggplot2")
+library("factoextra")
+library("fpc")
+library("NbClust")
+library("cluster")
+library("clValid")
+library("kohonen")
+library("mclust")
+library("reshape2")
+library("purrr")
+library("dplyr")
+library("dendextend")
+library("corrplot")
+library("FactoMineR")
+library("igraph")
+library("data.table")
+library("microbenchmark")
+#===============================================================================
+#Nombre: Jonathan Calvopiña
+#Fecha: 17/05/2024
+#Objetivo: Comparación del tiempo de los métodos clúster de ASI.
+#===============================================================================
+# 5) Ejecutar los metodos de LA y medir el tiempo en segundos
+#===============================================================================
+metodo_3 <- function(DataBase_modificada) {
+  write.table(x = DataBase_modificada, sep = ";",
+              row.names = FALSE, col.names = TRUE)
+  hs <- callSimilarityTree(file_path , contribution.supp = FALSE,
+                           typicality.supp = FALSE,
+                           verbose=FALSE)
+}
+#metodo_3(DataBase_modificada)
+
+metodo_4 <- function(DataBase_modificada){
+  write.table(x = DataBase_modificada, sep = ";",
+              row.names = FALSE, col.names = TRUE)
+  hr <- callHierarchyTree(file_path, contribution.supp = FALSE,
+                          typicality.supp = FALSE,
+                          computing.mode = 3, verbose = FALSE)
+}
+#metodo_4(DataBase_modificada)
+#===============================================================================
+# 5.2) Mostrar los resultados de tiempos de los metodos de LA
+#===============================================================================
+tiempo3 <- numeric(fin_data - inicio_data + 1)
+tiempo4 <- numeric(fin_data - inicio_data + 1)
+
+for (i in inicio_data:fin_data) {
+  file_path <- paste0(directorio, "File_", sprintf("%03d", i), ".csv")
+  DataBase <- read.csv(file_path, sep = ";", header = TRUE)
+  
+  # Eliminar filas duplicadas
+  #DataBase_modificada <- DataBase[!duplicated(DataBase), ]
+  
+  # Método 3
+  micro_3 <- microbenchmark(metodo_3(DataBase_modificada), times = 1L)
+  tiempo3[i - inicio_data + 1] <- micro_3$time / 1e9  # Convertir de nanosegundos a segundos
+  
+  # Método 4
+  micro_4 <- microbenchmark(metodo_4(DataBase_modificada), times = 1L)
+  tiempo4[i - inicio_data + 1] <- micro_4$time / 1e9  # Convertir de nanosegundos a segundos
+}
+#===============================================================================
+# 5.3) Guardar el tiempo en segundos de los distintos metodos en Excel
+#===============================================================================
+# Crear un dataframe con los tiempos de ejecución de ambos métodos
+resultados <- data.frame(Met_similary = tiempo3, Met_cohesion = tiempo4)
+
+# Escribir los resultados en un archivo de Excel
+write.xlsx(resultados, file = "resultados_tiempo.xlsx")
+#===============================================================================
+
+
+
