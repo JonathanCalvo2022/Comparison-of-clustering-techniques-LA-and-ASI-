@@ -1,0 +1,20 @@
+#===============================================================================
+#Nombre: Jonathan Calvopiña
+#Fecha: 17/05/2024
+#Objetivo: Metodos de las tecnica clusters de LA.
+#===============================================================================
+#===============================================================================
+# 3) Metodos de las tecnica clusters de LA.
+#===============================================================================
+# Método 1 (hclust)
+metodo_1 <- function(DataBase_modificada){
+  d <- dist(DataBase_modificada, method = "euclidean") 
+  met_hclust <- hclust(d, method = "complete") 
+  plot(met_hclust, cex = 0.6, hang = -1) 
+}
+# Método 2 (Diana)
+metodo_2 <- function(DataBase_modificada){
+  met_diana <- diana(DataBase_modificada)
+  pltree(met_diana, cex = 0.6, hang = -1)
+}
+#===============================================================================
