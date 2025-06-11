@@ -20,7 +20,7 @@ library("igraph")
 library("data.table")
 library("microbenchmark")
 #===============================================================================
-#Nombre: Jonathan Calvopiña
+#Nombre: Jonathan C
 #Fecha: 17/05/2024
 #Objetivo: Comparación del tiempo de los métodos clúster de ASI.
 #===============================================================================
